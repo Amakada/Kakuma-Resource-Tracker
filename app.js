@@ -19,10 +19,54 @@ function init() {
 
 //In this section we demonstrate how to bind events to DOM Elements
 function bindEvents() {
-    form.addEventListener('submit', handleSubmit);
+    form.addEventListener('submit', handleFormSubmit);
     searchInput.addEventListener('input', handleSearch);
     resourceList.addEventListener('click', handleResourceClick);
     filterButtons.forEach(btn=>{
         btn.addEventListener('click', handleFilterClick);
     })
 } 
+//This section demonstrates how to handle events
+function handleFormSubmit(e) {
+    e.preventDefault();
+
+const formData = new FormData(form);
+const resource = {
+   name: formData.get('resourceName').trim(), 
+   type: formData.get('resourceType'),
+   location: formData.get('resourceLocation').trim(),
+   id: Date.now().toString(),
+   dateAdded: new Date().toLocaleDateString()
+};
+if(validateForm(resource)) {
+  addResource(resource);
+  form.reset();
+  clearErrors();
+}
+}
+//This section demonstrates how to validate form inputs
+function validateForm(resource) {
+    let isValid = true;
+    if(resource.name){
+        showError('nameError', ' Resource Name is required');
+        isValid = false;
+    }
+    if(resource.type){
+        showError('typeError', ' Resource Type is required');
+        isValid = false;
+    }
+    if(resource.location){
+        showError('locationError', ' Resource Location is required');
+        isValid = false;
+    }
+    return isValid;
+}
+ function showError(elemenntId, message) {
+    const erroElement = document.getElementById(elementId);
+    errorElement.textContent = message;
+ }
+ function clearErrors() {
+    document.querySelectorAll('.error-message').forEach(el=>{
+        el.textContent = '';
+    });
+ }
