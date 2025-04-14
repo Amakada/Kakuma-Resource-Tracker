@@ -9,3 +9,20 @@ const filterButtons = document.querySelectorAll('.filter-btn');
 let resources = JSON.parse(localStorage.getItem('resources'));
 let currentFilter = 'all';
 let searchTerm = '';
+
+//This section demonstrates how we should initialize the application
+function init() {
+    renderResources();
+    bindEvents();
+    updateCounter();
+};
+
+//In this section we demonstrate how to bind events to DOM Elements
+function bindEvents() {
+    form.addEventListener('submit', handleSubmit);
+    searchInput.addEventListener('input', handleSearch);
+    resourceList.addEventListener('click', handleResourceClick);
+    filterButtons.forEach(btn=>{
+        btn.addEventListener('click', handleFilterClick);
+    })
+} 
